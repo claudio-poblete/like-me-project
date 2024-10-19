@@ -6,17 +6,19 @@ import PostList from './components/PostList'
 const App = () => {
   const [posts, setPosts] = useState([])
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/posts')
-        setPosts(response.data)
-      } catch (error) {
-        console.error('Error al obtener los posts', error)
-      }
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/posts')
+      setPosts(response.data)
+    } catch (error) {
+      console.error('Error al obtener los posts:', error)
     }
+  }
+
+  useEffect(() => {
     fetchPosts()
   }, [])
+
 
   const handleNewPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -26,7 +28,7 @@ const App = () => {
     <div className="container">
       <h1>Like Me - Publicaciones</h1>
       <Form onNewPost={handleNewPost} />
-      <PostList posts={posts} />
+      <PostList posts={posts} fetchPosts={fetchPosts}/>
     </div>
   )
 }
